@@ -1,5 +1,6 @@
 package com.example.eciot;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -24,6 +25,11 @@ public class Menu extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    public void identificarObjeto(View v){
+        Intent identificarObjeto = new Intent(getBaseContext(), IdentificarObjeto.class);
+        startActivity(identificarObjeto);
     }
 
 }
