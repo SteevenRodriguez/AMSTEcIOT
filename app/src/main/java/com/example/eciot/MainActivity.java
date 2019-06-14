@@ -17,19 +17,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button logIn = findViewById(R.id.btnInicio);
-        et1 = (EditText) findViewById(R.id.txtUsuario);
-        et2 = (EditText) findViewById(R.id.txtPassword);
+        et1 = findViewById(R.id.txtUsuario);
+        et2 = findViewById(R.id.txtPassword);
 
 
-        logIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, DrawerMenuActivity.class);
-                startActivity(intent);
 
-            }
-        });
 
 
 
@@ -45,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             String p=fila.getString(1);
             if(usuario.equals(u)&& contrasena.equals(p)){
                 //Ventana de menu al ingresar
-                Intent ingreso= new Intent(this,Menu.class);
+                Intent ingreso= new Intent(this,DrawerMenuActivity.class);
                 startActivity(ingreso);
                 et1.setText("");
                 et2.setText("");
