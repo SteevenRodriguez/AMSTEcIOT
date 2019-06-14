@@ -13,12 +13,45 @@
     app:umanoPanelHeight="25dp"
     app:umanoShadowHeight="5dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text=""
-        android:textSize="16sp" />
+        tools:context=".IdentifyObjectActvity">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="-374dp">
+
+            <EditText
+                android:id="@+id/txtPeso"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:gravity="center"
+                android:hint="Peso"
+                android:inputType="numberDecimal" />
+
+            <Button
+                android:id="@+id/btnObjeto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:padding="20dp"
+                android:text="IDENTIFICAR OBJETO" />
+
+            <ImageView
+                android:id="@+id/img_objeto"
+                android:layout_width="match_parent"
+                android:layout_height="370dp"
+                app:srcCompat="@drawable/above_shadow" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"

@@ -1,11 +1,10 @@
 package com.example.eciot;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -13,9 +12,16 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 public class DrawerMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private EditText txtPeso;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +37,40 @@ public class DrawerMenuActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
+
+        txtPeso =  findViewById(R.id.txtPeso);
+        btn = findViewById(R.id.btnObjeto);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                identifyObject();
+            }
+        });
+    }
+
+    public void identifyObject(){
+        String pesoString = txtPeso.getText().toString();
+        Integer peso = Integer.parseInt(pesoString);
+
+        ImageView image = findViewById(R.id.img_objeto);
+
+        if(peso<2) {
+            image.setImageResource(R.drawable.extra_liviano);
+        }
+        else if(peso <4){
+            image.setImageResource(R.drawable.liviano);
+        }
+        else if(peso < 6){
+            image.setImageResource(R.drawable.promedio);
+        }
+        else if(peso <8){
+            image.setImageResource(R.drawable.pesado);
+        }
+        else{
+            image.setImageResource(R.drawable.extra_pesado);
+        }
+
     }
 
     @Override
@@ -73,6 +113,8 @@ public class DrawerMenuActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Handle the camera action
+            Intent intent = new Intent(getBaseContext(), DrawerMenuActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         }  else if (id == R.id.nav_share) {
