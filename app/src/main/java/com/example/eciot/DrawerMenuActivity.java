@@ -9,6 +9,15 @@ import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 
+import org.json.JSONObject;
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -16,18 +25,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DrawerMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private EditText txtPeso;
-    private Button btn;
+    private RequestQueue mQueue;
+    private TextView txtPeso;
+    private Button btnIdentificar;
+    String token;
+    private String pesoObtenido, idCategoriaObtenida;
+    private String nombreCategoria;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        mQueue = Volley.newRequestQueue(this);
+        //Intent login = getIntent();
+        //this.token = (String)login.getExtras().get("token");
+        this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbWUiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-8ebQHg5Q0cVzl9mbFoQ";
         //setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -39,38 +60,131 @@ public class DrawerMenuActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         txtPeso =  findViewById(R.id.txtPeso);
-        btn = findViewById(R.id.btnObjeto);
+        btnIdentificar = findViewById(R.id.btnObjeto);
 
-        btn.setOnClickListener(new View.OnClickListener() {
+        btnIdentificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                identifyObject();
+                identificarObjeto();
             }
         });
     }
 
-    public void identifyObject(){
+    /*
+    Autor: Sophia Gómez
+    Función que recibe el id de la categoria y setea la imagen de la categoria a la que pertenece
+    el objeto pesado
+     */
+    public void setImagen(String idCategoria){
         String pesoString = txtPeso.getText().toString();
         Integer peso = Integer.parseInt(pesoString);
 
         ImageView image = findViewById(R.id.img_objeto);
 
-        if(peso<2) {
-            image.setImageResource(R.drawable.extra_liviano);
+        if(idCategoria.equals("2")) {
+            image.setImageResource(R.drawable.celular);
         }
-        else if(peso <4){
-            image.setImageResource(R.drawable.liviano);
+        else if(idCategoria.equals("3")){
+            image.setImageResource(R.drawable.lapiz);
         }
-        else if(peso < 6){
-            image.setImageResource(R.drawable.promedio);
+        else if(idCategoria.equals("4")){
+            image.setImageResource(R.drawable.moneda);
         }
-        else if(peso <8){
-            image.setImageResource(R.drawable.pesado);
+        else if(idCategoria.equals("5")){
+            image.setImageResource(R.drawable.cuaderno);
         }
-        else{
-            image.setImageResource(R.drawable.extra_pesado);
+        else if(idCategoria.equals("6")){
+            image.setImageResource(R.drawable.esmalte);
         }
 
+    }
+    /*
+    Autor: Sophia Gómez
+    Función que al clickear en el botón, sensa el peso del objeto en la balanza
+    y muestra una imagen de la clasificación
+     */
+    public void identificarObjeto(){
+        final TextView peso = (TextView) findViewById(R.id.txtPeso);
+        final TextView clasificador = (TextView) findViewById(R.id.txtClasificador);
+        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso";
+
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, url_temp, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response);
+                        try {
+                            pesoObtenido=response.getString("peso");
+                            System.out.println(pesoObtenido);
+                            peso.setText("El peso del objeto es " + pesoObtenido + " gramos");
+
+                            idCategoriaObtenida=response.getString("categoria");
+                            System.out.println(pesoObtenido);
+                            clasificador.setText("Categoria: " + obtenerCategoria(idCategoriaObtenida));
+
+                            setImagen(idCategoriaObtenida);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            public Map<String,
+                    String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String,
+                        String>();
+                params.put("Authorization", "JWT " + token);
+                System.out.println(token);
+                return params;
+            }
+        };;
+        mQueue.add(request);
+
+    }
+
+    /*
+    Autor: Sophia Gómez
+    Función que recibe el id de la categoria y devuelve el nombre de la categoria
+    obtenida de la base de datos de herokuapp
+     */
+    public String obtenerCategoria(String idCategoria){
+        String url_temp = "https://amstdb.herokuapp.com/db/categoria/" + idCategoria;
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.GET, url_temp, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response);
+                        try {
+                            nombreCategoria=response.getString("nombre");
+                            System.out.println(nombreCategoria);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }){
+            @Override
+            public Map<String,
+                    String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String,
+                        String>();
+                params.put("Authorization", "JWT " + token);
+                System.out.println(token);
+                return params;
+            }
+        };;
+        mQueue.add(request);
+        return nombreCategoria;
     }
 
     @Override
