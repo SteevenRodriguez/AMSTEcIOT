@@ -33,7 +33,7 @@
                 android:layout_width="109dp"
                 android:layout_height="wrap_content"
                 android:text="Objeto:"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txtClasificador"
@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="desconocido"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -55,7 +55,7 @@
                 android:layout_width="109dp"
                 android:layout_height="wrap_content"
                 android:text="Peso:"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/txtPesoValor"
@@ -63,13 +63,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="0.013"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/imgObjeto"
             android:layout_width="match_parent"
-            android:layout_height="255dp"
+            android:layout_height="231dp"
             android:layout_marginTop="20dp"
             app:srcCompat="@drawable/above_shadow" />
 

@@ -44,8 +44,6 @@ public class DrawerMenuActivity extends AppCompatActivity
         setContentView(R.layout.activity_drawer_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mQueue = Volley.newRequestQueue(this);
-        //Intent login = getIntent();
-        //this.token = (String)login.getExtras().get("token");
         this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbWUiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-8ebQHg5Q0cVzl9mbFoQ";
         //setSupportActionBar(toolbar);
 
@@ -66,6 +64,7 @@ public class DrawerMenuActivity extends AppCompatActivity
                 identificarObjeto();
             }
         });
+
     }
 
     /*
@@ -227,7 +226,10 @@ public class DrawerMenuActivity extends AppCompatActivity
 
             Intent intent = new Intent(getBaseContext(), DrawerMenuActivity.class);
             startActivity(intent);
+
         } else if (id == R.id.nav_training) {
+            Intent intent = new Intent(getBaseContext(), Entrenador.class);
+            startActivity(intent);
 
         }else if (id == R.id.nav_history) {
             Intent intent = new Intent(getBaseContext(), HistoryActivity.class);
