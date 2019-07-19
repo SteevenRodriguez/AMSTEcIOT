@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -23,7 +22,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -225,14 +223,19 @@ public class DrawerMenuActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
-            // Handle the camera action
+
             Intent intent = new Intent(getBaseContext(), DrawerMenuActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
+
+        } else if (id == R.id.nav_training) {
             Intent intent = new Intent(getBaseContext(), Entrenador.class);
             startActivity(intent);
 
-        }  else if (id == R.id.nav_share) {
+        }else if (id == R.id.nav_history) {
+            Intent intent = new Intent(getBaseContext(), HistoryActivity.class);
+            startActivity(intent);
+        }
+        else if (id == R.id.nav_share) {
 
         }
 

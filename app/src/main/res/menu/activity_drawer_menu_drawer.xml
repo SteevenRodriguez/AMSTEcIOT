@@ -9,9 +9,13 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="Clasificador" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_training"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Entrenamiento" />
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Ver Histórico" />
 
 
     </group>
