@@ -43,11 +43,10 @@
                 android:layout_width="321dp"
                 android:layout_height="42dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="15dp"
                 android:ems="10"
-                android:gravity="center"
-                android:inputType="numberDecimal" />
+                android:gravity="center" />
 
             <Button
                 android:id="@+id/btnObjeto"
@@ -58,9 +57,10 @@
                 android:text="IDENTIFICAR OBJETO" />
 
             <ImageView
-                android:id="@+id/img_objeto"
+                android:id="@+id/imgObjeto"
                 android:layout_width="match_parent"
-                android:layout_height="370dp"
+                android:layout_height="273dp"
+                android:layout_marginTop="20dp"
                 app:srcCompat="@drawable/above_shadow" />
 
             <TextView

@@ -29,14 +29,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_objeto"
+                android:id="@+id/txtObjeto"
                 android:layout_width="109dp"
                 android:layout_height="wrap_content"
                 android:text="Objeto:"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/txtobjeto_valor"
+                android:id="@+id/txtClasificador"
                 android:layout_width="121dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,14 +51,14 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/txt_peso"
+                android:id="@+id/txtPeso"
                 android:layout_width="109dp"
                 android:layout_height="wrap_content"
                 android:text="Peso:"
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/txtpeso_valor"
+                android:id="@+id/txtPesoValor"
                 android:layout_width="121dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -66,14 +66,21 @@
                 android:textSize="24sp" />
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/imgObjeto"
+            android:layout_width="match_parent"
+            android:layout_height="255dp"
+            android:layout_marginTop="20dp"
+            app:srcCompat="@drawable/above_shadow" />
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="111dp"
+            android:layout_height="61dp"
             android:gravity="center_horizontal|center_vertical"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btn_acerto"
+                android:id="@+id/btnAcerto"
                 android:layout_width="115dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -82,7 +89,7 @@
                 android:text="Acertó" />
 
             <Button
-                android:id="@+id/btn_fallo"
+                android:id="@+id/btnFallo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -92,9 +99,9 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textView10"
+            android:id="@+id/txtCategoria"
             android:layout_width="match_parent"
-            android:layout_height="57dp"
+            android:layout_height="47dp"
             android:gravity="center_horizontal|center_vertical"
             android:text="Categorias Disponibles"
             android:textSize="22sp" />
@@ -112,16 +119,18 @@
                 android:padding="3px">
 
                 <ImageView
-                    android:id="@+id/imageView1"
+                    android:id="@+id/imgCelulat"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/celular" />
 
                 <TextView
-                    android:id="@+id/txt_cat1"
+                    android:id="@+id/txtCelular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="categoria1" />
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:text="Celular" />
             </LinearLayout>
 
             <LinearLayout
@@ -131,16 +140,18 @@
                 android:padding="3px">
 
                 <ImageView
-                    android:id="@+id/imageView2"
+                    android:id="@+id/imgLapiz"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/lapiz" />
 
                 <TextView
-                    android:id="@+id/txt_cat2"
+                    android:id="@+id/txtLapiz"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="categoria1" />
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:text="Lapices" />
             </LinearLayout>
 
             <LinearLayout
@@ -150,16 +161,18 @@
                 android:padding="3px">
 
                 <ImageView
-                    android:id="@+id/imageView3"
+                    android:id="@+id/imgMoneda"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/moneda" />
 
                 <TextView
-                    android:id="@+id/txt_cat3"
+                    android:id="@+id/txtMoneda"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="categoria1" />
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:text="Moneda" />
             </LinearLayout>
 
             <LinearLayout
@@ -169,16 +182,18 @@
                 android:padding="3px">
 
                 <ImageView
-                    android:id="@+id/imageView4"
+                    android:id="@+id/imgCuaderno"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/cuaderno" />
 
                 <TextView
-                    android:id="@+id/txt_cat4"
+                    android:id="@+id/txtCuaderno"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="categoria1" />
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:text="Cuaderno" />
             </LinearLayout>
 
             <LinearLayout
@@ -188,16 +203,18 @@
                 android:padding="3px">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/imgEsmalte"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/ic_launcher_background" />
+                    android:layout_height="100dp"
+                    app:srcCompat="@drawable/esmalte" />
 
                 <TextView
-                    android:id="@+id/txt_cat5"
+                    android:id="@+id/txtEsmalte"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="categoria1" />
+                    android:layout_marginTop="5dp"
+                    android:textAlignment="center"
+                    android:text="Esmalte" />
             </LinearLayout>
         </LinearLayout>
 

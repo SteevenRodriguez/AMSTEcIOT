@@ -76,10 +76,8 @@ public class DrawerMenuActivity extends AppCompatActivity
     el objeto pesado
      */
     public void setImagen(String idCategoria){
-        String pesoString = txtPeso.getText().toString();
-        Integer peso = Integer.parseInt(pesoString);
 
-        ImageView image = findViewById(R.id.img_objeto);
+        final ImageView image = findViewById(R.id.imgObjeto);
 
         if(idCategoria.equals("2")) {
             image.setImageResource(R.drawable.celular);
@@ -105,8 +103,8 @@ public class DrawerMenuActivity extends AppCompatActivity
      */
     public void identificarObjeto(){
         final TextView peso = (TextView) findViewById(R.id.txtPeso);
-        final TextView clasificador = (TextView) findViewById(R.id.txtClasificador);
-        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso";
+
+        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/2";
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url_temp, null,
@@ -120,9 +118,9 @@ public class DrawerMenuActivity extends AppCompatActivity
                             peso.setText("El peso del objeto es " + pesoObtenido + " gramos");
 
                             idCategoriaObtenida=response.getString("categoria");
-                            System.out.println(pesoObtenido);
-                            clasificador.setText("Categoria: " + obtenerCategoria(idCategoriaObtenida));
+                            System.out.println(idCategoriaObtenida);
 
+                            obtenerCategoria(idCategoriaObtenida);
                             setImagen(idCategoriaObtenida);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -152,7 +150,8 @@ public class DrawerMenuActivity extends AppCompatActivity
     Función que recibe el id de la categoria y devuelve el nombre de la categoria
     obtenida de la base de datos de herokuapp
      */
-    public String obtenerCategoria(String idCategoria){
+    public void obtenerCategoria(String idCategoria){
+        final TextView clasificador = (TextView) findViewById(R.id.txtClasificador);
         String url_temp = "https://amstdb.herokuapp.com/db/categoria/" + idCategoria;
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url_temp, null,
@@ -163,6 +162,7 @@ public class DrawerMenuActivity extends AppCompatActivity
                         try {
                             nombreCategoria=response.getString("nombre");
                             System.out.println(nombreCategoria);
+                            clasificador.setText("Categoria: " + nombreCategoria);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -184,7 +184,7 @@ public class DrawerMenuActivity extends AppCompatActivity
             }
         };;
         mQueue.add(request);
-        return nombreCategoria;
+        //return nombreCategoria;
     }
 
     @Override
