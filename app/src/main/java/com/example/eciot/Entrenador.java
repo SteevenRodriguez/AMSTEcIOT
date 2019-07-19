@@ -49,14 +49,14 @@ public class Entrenador extends AppCompatActivity {
         btnAcerto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postPeso("1");
+                postPeso(true);
             }
         });
 
         btnFallo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postPeso("0");
+                postPeso(false);
             }
         });
     }
@@ -181,11 +181,12 @@ public class Entrenador extends AppCompatActivity {
 
 
 
-    public void postPeso(String acierto){
-        Map<String, String> params = new HashMap();
+    public void postPeso(boolean acierto){
+        Map<String, Object> params = new HashMap();
 
-        params.put("categoria", idCategoriaObtenida);
-        params.put("peso", pesoObtenido);
+        params.put("clasificador", 1);
+        params.put("categoria", Integer.valueOf(idCategoriaObtenida));
+        params.put("peso", Float.valueOf(pesoObtenido));
         params.put("acerto", acierto);
         JSONObject parametros = new JSONObject(params);
 
