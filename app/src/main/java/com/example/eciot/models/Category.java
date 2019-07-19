@@ -3,12 +3,13 @@ package com.example.eciot.models;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Category extends RealmObject{
-
+    @PrimaryKey
     @SerializedName("id")
     @Expose
     private int id;

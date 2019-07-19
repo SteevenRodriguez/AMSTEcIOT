@@ -13,7 +13,9 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 
 public interface ApiService {
@@ -24,12 +26,12 @@ public interface ApiService {
                          @Field("password") String password);
 
     @GET("categoria")
-    @FormUrlEncoded
     Call<List<Category>> getCategories(@Header("Authorization") String token);
 
     @GET("registroDePeso")
-    @FormUrlEncoded
     Call<List<ObjectModel>> getObjects(@Header("Authorization") String token);
+    @GET("registroDePeso/{pk}")
+    Call<ObjectModel> getObject(@Path("pk") int pk, @Header("Authorization") String authorization );
 
     @POST
     @FormUrlEncoded
@@ -38,7 +40,6 @@ public interface ApiService {
 
 
     @GET("dispositivo")
-    @FormUrlEncoded
     Call<List<Device>> getDevices(@Header("Authorization") String token);
 
     @POST("clasificador_objetos/ultimoRegistro")

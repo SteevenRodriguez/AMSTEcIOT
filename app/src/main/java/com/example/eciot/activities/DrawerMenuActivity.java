@@ -12,10 +12,21 @@ import com.example.eciot.fragments.TrainingFragment;
 import com.example.eciot.fragments.ClassifyFragment;
 import com.example.eciot.fragments.HistoryFragment;
 import com.example.eciot.R;
+import com.example.eciot.models.Category;
+import com.example.eciot.models.Token;
+import com.example.eciot.services.ApiService;
+import com.example.eciot.services.RetrofitClient;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+
+import java.util.List;
+
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DrawerMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +49,7 @@ public class DrawerMenuActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         handle(R.id.nav_home);
         setTitle("Clasificar Objeto");
+        downloadCategories();
 
     }
 
@@ -111,6 +123,37 @@ public class DrawerMenuActivity extends AppCompatActivity
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
+
+    }
+
+
+    private void downloadCategories(){
+
+        final Realm realm  = Realm.getDefaultInstance();
+        try {
+            Token token = realm.where(Token.class).findAll().last();
+            ApiService api = RetrofitClient.createApiService();
+            api.getCategories("JWT "+token.getToken()).enqueue(new Callback<List<Category>>() {
+                @Override
+                public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                    if (response.isSuccessful()){
+                        realm.beginTransaction();
+                        realm.copyToRealmOrUpdate(response.body());
+                        realm.commitTransaction();
+                        realm.close();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<Category>> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception e ){
+                e.getMessage();
+        }
+
+
 
     }
 

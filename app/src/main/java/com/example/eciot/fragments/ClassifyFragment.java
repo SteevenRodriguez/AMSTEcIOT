@@ -23,11 +23,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.eciot.R;
 import com.example.eciot.databinding.FragmentClassifyBinding;
+import com.example.eciot.models.Category;
+import com.example.eciot.models.ObjectModel;
+import com.example.eciot.models.Token;
+import com.example.eciot.services.ApiService;
+import com.example.eciot.services.RetrofitClient;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 public class ClassifyFragment extends Fragment {
     private FragmentClassifyBinding mFragmentClassifyBinding;
@@ -47,10 +56,6 @@ public class ClassifyFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mFragmentClassifyBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_classify,
                 container,false);
-        mQueue = Volley.newRequestQueue(getContext());
-        this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbW" +
-                "UiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-" +
-                "8ebQHg5Q0cVzl9mbFoQ";
         txtPeso =  mFragmentClassifyBinding.txtPeso;
         btnIdentificar = mFragmentClassifyBinding.btnObjeto;
 
@@ -58,6 +63,9 @@ public class ClassifyFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 identificarObjeto();
+
+
+
             }
         });
 
@@ -100,45 +108,38 @@ public class ClassifyFragment extends Fragment {
     y muestra una imagen de la clasificación
      */
     public void identificarObjeto(){
-        final TextView peso = mFragmentClassifyBinding.txtPeso;
+        final Realm realm = Realm.getDefaultInstance();
+        try {
+            Token token = realm.where(Token.class).findFirst();
+            ApiService apiService = RetrofitClient.createApiService();
+            apiService.getObject(2,"JWT "+token.getToken()).enqueue(new Callback<ObjectModel>() {
+                @Override
+                public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
+                    if (response.isSuccessful()){
+                        ObjectModel obj = response.body();
+                        mFragmentClassifyBinding.txtPeso.setText("El peso del objeto es "
+                                + obj.getPeso() + " gramos");
+                        Category category = realm.where(Category.class).
+                                equalTo("id",obj.getCategoria()).findFirst();
+                        mFragmentClassifyBinding.txtClasificador.
+                                setText("Categoría: "+category.getNombre());
+                        setImagen(String.valueOf(category.getId()));
 
-        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/2";
+                        realm.close();
 
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, url_temp, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                        try {
-                            pesoObtenido=response.getString("peso");
-                            System.out.println(pesoObtenido);
-                            peso.setText("El peso del objeto es " + pesoObtenido + " gramos");
 
-                            idCategoriaObtenida=response.getString("categoria");
-                            System.out.println(idCategoriaObtenida);
-
-                            obtenerCategoria(idCategoriaObtenida);
-                            setImagen(idCategoriaObtenida);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            public Map<String,
-                                String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Authorization", "JWT " + token);
-                System.out.println(token);
-                return params;
-            }
-        };;
-        mQueue.add(request);
+                }
+
+                @Override
+                public void onFailure(Call<ObjectModel> call, Throwable t) {
+
+                }
+            });
+
+        } catch (Exception e){
+            e.getMessage();
+        }
 
     }
 

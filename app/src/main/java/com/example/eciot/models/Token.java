@@ -2,16 +2,28 @@ package com.example.eciot.models;
 
 import io.realm.Realm;
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 public class Token extends RealmObject {
+    @PrimaryKey
+    private int id;
 
     @SerializedName("token")
     @Expose
     private String token;
+    public Token(){
+        this.id = new Date().hashCode();
+    }
 
+    public Token(String token) {
+        this.id = new Date().hashCode();
+        this.token = token;
+    }
     public String getToken() {
         return token;
     }
