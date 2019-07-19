@@ -67,16 +67,6 @@ public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ChildViewH
         void bind(ObjectModel objectModel) {
             mBinding.setObject(objectModel);
 
-            if (objectModel.getType().equals("lapiz")){
-                mBinding.image.setImageResource(R.drawable.lapiz);
-            } else {
-                mBinding.image.setImageResource(R.drawable.cuaderno);
-            }
-
-            if (objectModel.getStatus()){
-                mBinding.state.setText("Acertado");
-                mBinding.state.setTextColor(Color.GREEN);
-            }
 
         }
     }

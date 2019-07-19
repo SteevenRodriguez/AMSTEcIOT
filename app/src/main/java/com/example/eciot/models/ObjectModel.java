@@ -1,43 +1,77 @@
 package com.example.eciot.models;
 
-public class ObjectModel {
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    private String type;
+import io.realm.RealmObject;
 
-    private Float weight;
+public class ObjectModel extends RealmObject {
 
-    private Boolean status;
+    @SerializedName("id")
+    @Expose
+    private int id;
+    @SerializedName("clasificador")
+    @Expose
+    private int clasificador;
+    @SerializedName("categoria")
+    @Expose
+    private int categoria;
+    @SerializedName("fecha_registro")
+    @Expose
+    private String fechaRegistro;
+    @SerializedName("peso")
+    @Expose
+    private double peso;
+    @SerializedName("acerto")
+    @Expose
+    private boolean acerto;
 
-
-    public ObjectModel(){}
-
-    public ObjectModel(String type, Float weight, Boolean status) {
-        this.type = type;
-        this.weight = weight;
-        this.status = status;
+    public int getId() {
+        return id;
     }
 
-    public String getType() {
-        return type;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public int getClasificador() {
+        return clasificador;
     }
 
-    public Float getWeight() {
-        return weight;
+    public void setClasificador(int clasificador) {
+        this.clasificador = clasificador;
     }
 
-    public void setWeight(Float weight) {
-        this.weight = weight;
+    public int getCategoria() {
+        return categoria;
     }
 
-    public Boolean getStatus() {
-        return status;
+    public void setCategoria(int categoria) {
+        this.categoria = categoria;
     }
 
-    public void setStatus(Boolean status) {
-        this.status = status;
+    public String getFechaRegistro() {
+        return fechaRegistro;
     }
+
+    public void setFechaRegistro(String fechaRegistro) {
+        this.fechaRegistro = fechaRegistro;
+    }
+
+    public double getPeso() {
+        return peso;
+    }
+
+    public void setPeso(double peso) {
+        this.peso = peso;
+    }
+
+    public boolean isAcerto() {
+        return acerto;
+    }
+
+    public void setAcerto(boolean acerto) {
+        this.acerto = acerto;
+    }
+
 }

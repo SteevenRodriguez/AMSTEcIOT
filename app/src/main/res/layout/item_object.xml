@@ -45,16 +45,16 @@
                 android:gravity="start|center">
 
                 <TextView
+                    android:id="@+id/category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{object.type}'
                     android:textAllCaps="true"
                     tools:text="TIPO" />
                 <TextView
                     android:id="@+id/weight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text='@{String.valueOf(object.weight)}'
+                    android:text='@{String.valueOf(object.peso)}'
                     android:textAllCaps="true"
                     tools:text="PESO" />
                 <TextView

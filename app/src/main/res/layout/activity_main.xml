@@ -1,70 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <data>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">      //k
+        tools:context=".activities.MainActivity">
 
-        <!-- INICIO NES
-             DESCRIPCION:  ARCHIVO XML QUE CONTIENE EL LOGIN DE LA APP
-       -->
-        <!-- CAMPO PARA AGREGAR EL USUARIO CON QUE SE VA A HACER LOGIN -->
-        <EditText
-            android:id="@+id/txtUsuario"
-            style="@style/Widget.AppCompat.EditText"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:hint="@string/username"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:selectAllOnFocus="false"
-            android:singleLine="false" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">//k
 
-        <!-- CAMPO PARA AGRREGAR LA CONTRASENIA DEL LOGIN -->
-        <EditText
-            android:id="@+id/txtPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="20dp"
-            android:ems="10"
-            android:hint="@string/password"
-            android:importantForAutofill="no"
-            android:inputType="textPassword" />
+            <!-- INICIO NES
+                 DESCRIPCION:  ARCHIVO XML QUE CONTIENE EL LOGIN DE LA APP
+           -->
+            <!-- CAMPO PARA AGREGAR EL USUARIO CON QUE SE VA A HACER LOGIN -->
+            <EditText
+                android:id="@+id/txtUsuario"
+                style="@style/Widget.AppCompat.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="@string/username"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:selectAllOnFocus="false"
+                android:singleLine="false" />
 
-        <!-- BOTON PARA INICIO DE SESION -->
-        <Button
-            android:id="@+id/btnInicio"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="50dp"
-            android:onClick="iniciarSesion"
-            android:text="@string/login" />
+            <!-- CAMPO PARA AGRREGAR LA CONTRASENIA DEL LOGIN -->
+            <EditText
+                android:id="@+id/txtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="@string/password"
+                android:importantForAutofill="no"
+                android:inputType="textPassword" />
 
-        <!-- BOTON OPARA REGISTRARSE EN CASO DE NO TENER CUENTA -->
-        <Button
-            android:id="@+id/btnRegistrar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginRight="50dp"
-            android:text="@string/register" />
-    </LinearLayout>
+            <!-- BOTON PARA INICIO DE SESION -->
+            <Button
+                android:id="@+id/btnInicio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="50dp"
+                android:onClick="iniciarSesion"
+                android:text="@string/login" />
 
-    <!-- FIN NES -->
-</android.support.constraint.ConstraintLayout>
+            <!-- BOTON OPARA REGISTRARSE EN CASO DE NO TENER CUENTA -->
+            <Button
+                android:id="@+id/btnRegistrar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginRight="50dp"
+                android:text="@string/register" />
+        </LinearLayout>
+
+        <!-- FIN NES -->
+    </android.support.constraint.ConstraintLayout>
+</layout>

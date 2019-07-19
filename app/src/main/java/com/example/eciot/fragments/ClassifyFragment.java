@@ -1,12 +1,18 @@
-package com.example.eciot;
+package com.example.eciot.fragments;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Context;
+import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.view.View;
-import android.content.Intent;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -15,52 +21,52 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.eciot.R;
+import com.example.eciot.databinding.FragmentClassifyBinding;
 
 import org.json.JSONObject;
 
-import java.sql.SQLOutput;
 import java.util.HashMap;
 import java.util.Map;
 
-
-
-public class Entrenador extends AppCompatActivity {
+public class ClassifyFragment extends Fragment {
+    private FragmentClassifyBinding mFragmentClassifyBinding;
     private RequestQueue mQueue;
-
-    private Button btnAcerto, btnFallo;
+    private TextView txtPeso;
+    private Button btnIdentificar;
     String token;
     private String pesoObtenido, idCategoriaObtenida;
     private String nombreCategoria;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_entrenador);
-
-        mQueue = Volley.newRequestQueue(this);
-        this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbWUiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-8ebQHg5Q0cVzl9mbFoQ";
-
-        identificarObjeto();
-
-        btnAcerto = (Button) findViewById(R.id.btnAcerto);
-        btnFallo = (Button) findViewById(R.id.btnFallo);
-
-
-        btnAcerto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postPeso(true);
-            }
-        });
-
-        btnFallo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                postPeso(false);
-            }
-        });
+    public ClassifyFragment() {
+        // Required empty public constructor
     }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mFragmentClassifyBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_classify,
+                container,false);
+        mQueue = Volley.newRequestQueue(getContext());
+        this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbW" +
+                "UiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-" +
+                "8ebQHg5Q0cVzl9mbFoQ";
+        txtPeso =  mFragmentClassifyBinding.txtPeso;
+        btnIdentificar = mFragmentClassifyBinding.btnObjeto;
+
+        btnIdentificar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                identificarObjeto();
+            }
+        });
+
+
+
+
+        return mFragmentClassifyBinding.getRoot();
+
+    }
 
     /*
     Autor: Sophia Gómez
@@ -69,7 +75,7 @@ public class Entrenador extends AppCompatActivity {
      */
     public void setImagen(String idCategoria){
 
-        final ImageView image = findViewById(R.id.imgObjeto);
+        final ImageView image = mFragmentClassifyBinding.imgObjeto;
 
         if(idCategoria.equals("2")) {
             image.setImageResource(R.drawable.celular);
@@ -94,9 +100,9 @@ public class Entrenador extends AppCompatActivity {
     y muestra una imagen de la clasificación
      */
     public void identificarObjeto(){
-        final TextView peso = (TextView) findViewById(R.id.txtPesoValor);
+        final TextView peso = mFragmentClassifyBinding.txtPeso;
 
-        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/3";
+        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/2";
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url_temp, null,
@@ -107,7 +113,7 @@ public class Entrenador extends AppCompatActivity {
                         try {
                             pesoObtenido=response.getString("peso");
                             System.out.println(pesoObtenido);
-                            peso.setText(pesoObtenido + " gramos");
+                            peso.setText("El peso del objeto es " + pesoObtenido + " gramos");
 
                             idCategoriaObtenida=response.getString("categoria");
                             System.out.println(idCategoriaObtenida);
@@ -125,9 +131,8 @@ public class Entrenador extends AppCompatActivity {
         }){
             @Override
             public Map<String,
-                    String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String,
-                        String>();
+                                String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
                 params.put("Authorization", "JWT " + token);
                 System.out.println(token);
                 return params;
@@ -143,7 +148,7 @@ public class Entrenador extends AppCompatActivity {
     obtenida de la base de datos de herokuapp
      */
     public void obtenerCategoria(String idCategoria){
-        final TextView clasificador = (TextView) findViewById(R.id.txtClasificador);
+        final TextView clasificador = mFragmentClassifyBinding.txtClasificador;
         String url_temp = "https://amstdb.herokuapp.com/db/categoria/" + idCategoria;
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url_temp, null,
@@ -154,7 +159,7 @@ public class Entrenador extends AppCompatActivity {
                         try {
                             nombreCategoria=response.getString("nombre");
                             System.out.println(nombreCategoria);
-                            clasificador.setText(nombreCategoria);
+                            clasificador.setText("Categoria: " + nombreCategoria);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -168,8 +173,7 @@ public class Entrenador extends AppCompatActivity {
             @Override
             public Map<String,
                     String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String,
-                        String>();
+                Map<String, String> params = new HashMap<>();
                 params.put("Authorization", "JWT " + token);
                 System.out.println(token);
                 return params;
@@ -177,43 +181,5 @@ public class Entrenador extends AppCompatActivity {
         };;
         mQueue.add(request);
         //return nombreCategoria;
-    }
-
-
-
-    public void postPeso(boolean acierto){
-        Map<String, Object> params = new HashMap();
-
-        params.put("clasificador", 1);
-        params.put("categoria", Integer.valueOf(idCategoriaObtenida));
-        params.put("peso", Float.valueOf(pesoObtenido));
-        params.put("acerto", acierto);
-        JSONObject parametros = new JSONObject(params);
-
-        String login_url = "http://amstdb.herokuapp.com/db/registroDePeso";
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, login_url, parametros,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("Error: "+error);
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "JWT " + token);
-                System.out.println(token);
-                return params;
-            }
-        };
-        mQueue.add(request);
-
     }
 }

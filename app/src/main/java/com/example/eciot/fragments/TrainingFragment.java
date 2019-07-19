@@ -1,14 +1,17 @@
-package com.example.eciot;
+package com.example.eciot.fragments;
 
-import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.view.MenuItem;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.view.View;
 
-import org.json.JSONObject;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,56 +19,57 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.eciot.R;
+import com.example.eciot.databinding.FragmentTrainingBinding;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class DrawerMenuActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
 
+
+public class TrainingFragment extends Fragment {
     private RequestQueue mQueue;
-    private TextView txtPeso;
-    private Button btnIdentificar;
+    private FragmentTrainingBinding mBinding;
+    private Button btnAcerto, btnFallo;
     String token;
     private String pesoObtenido, idCategoriaObtenida;
     private String nombreCategoria;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_drawer_menu);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        mQueue = Volley.newRequestQueue(this);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_training,container,
+                false);
+        mQueue = Volley.newRequestQueue(getContext());
         this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbWUiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-8ebQHg5Q0cVzl9mbFoQ";
-        //setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        identificarObjeto();
 
-        txtPeso =  findViewById(R.id.txtPeso);
-        btnIdentificar = findViewById(R.id.btnObjeto);
+        btnAcerto = mBinding.btnAcerto;
+        btnFallo = mBinding.btnFallo;
 
-        btnIdentificar.setOnClickListener(new View.OnClickListener() {
+
+        btnAcerto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                identificarObjeto();
+                postPeso(true);
             }
         });
 
+        btnFallo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postPeso(false);
+            }
+        });
+
+        return mBinding.getRoot();
     }
+
+
+
 
     /*
     Autor: Sophia Gómez
@@ -74,7 +78,7 @@ public class DrawerMenuActivity extends AppCompatActivity
      */
     public void setImagen(String idCategoria){
 
-        final ImageView image = findViewById(R.id.imgObjeto);
+        final ImageView image = mBinding.imgObjeto;
 
         if(idCategoria.equals("2")) {
             image.setImageResource(R.drawable.celular);
@@ -99,9 +103,9 @@ public class DrawerMenuActivity extends AppCompatActivity
     y muestra una imagen de la clasificación
      */
     public void identificarObjeto(){
-        final TextView peso = (TextView) findViewById(R.id.txtPeso);
+        final TextView peso = mBinding.txtPesoValor;
 
-        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/2";
+        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/3";
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url_temp, null,
@@ -112,7 +116,7 @@ public class DrawerMenuActivity extends AppCompatActivity
                         try {
                             pesoObtenido=response.getString("peso");
                             System.out.println(pesoObtenido);
-                            peso.setText("El peso del objeto es " + pesoObtenido + " gramos");
+                            peso.setText(pesoObtenido + " gramos");
 
                             idCategoriaObtenida=response.getString("categoria");
                             System.out.println(idCategoriaObtenida);
@@ -148,7 +152,7 @@ public class DrawerMenuActivity extends AppCompatActivity
     obtenida de la base de datos de herokuapp
      */
     public void obtenerCategoria(String idCategoria){
-        final TextView clasificador = (TextView) findViewById(R.id.txtClasificador);
+        final TextView clasificador = mBinding.txtClasificador;
         String url_temp = "https://amstdb.herokuapp.com/db/categoria/" + idCategoria;
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.GET, url_temp, null,
@@ -159,7 +163,7 @@ public class DrawerMenuActivity extends AppCompatActivity
                         try {
                             nombreCategoria=response.getString("nombre");
                             System.out.println(nombreCategoria);
-                            clasificador.setText("Categoria: " + nombreCategoria);
+                            clasificador.setText(nombreCategoria);
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -184,63 +188,41 @@ public class DrawerMenuActivity extends AppCompatActivity
         //return nombreCategoria;
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.drawer_menu, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public void postPeso(boolean acierto){
+        Map<String, Object> params = new HashMap();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        params.put("clasificador", 1);
+        params.put("categoria", Integer.valueOf(idCategoriaObtenida));
+        params.put("peso", Float.valueOf(pesoObtenido));
+        params.put("acerto", acierto);
+        JSONObject parametros = new JSONObject(params);
 
-        return super.onOptionsItemSelected(item);
-    }
+        String login_url = "http://amstdb.herokuapp.com/db/registroDePeso";
+        JsonObjectRequest request = new JsonObjectRequest(
+                Request.Method.POST, login_url, parametros,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        System.out.println(response);
+                    }
+                }, new Response.ErrorListener() {
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error: "+error);
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "JWT " + token);
+                System.out.println(token);
+                return params;
+            }
+        };
+        mQueue.add(request);
 
-        if (id == R.id.nav_home) {
-
-            Intent intent = new Intent(getBaseContext(), DrawerMenuActivity.class);
-            startActivity(intent);
-
-        } else if (id == R.id.nav_training) {
-            Intent intent = new Intent(getBaseContext(), Entrenador.class);
-            startActivity(intent);
-
-        }else if (id == R.id.nav_history) {
-            Intent intent = new Intent(getBaseContext(), HistoryActivity.class);
-            startActivity(intent);
-        }
-        else if (id == R.id.nav_share) {
-
-        }
-
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 }
