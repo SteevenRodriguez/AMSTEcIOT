@@ -2,20 +2,21 @@ package com.example.eciot.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.eciot.R;
 import com.example.eciot.databinding.ItemObjectBinding;
+import com.example.eciot.models.Category;
 import com.example.eciot.models.ObjectModel;
+import com.example.eciot.models.Token;
 
 import java.util.List;
+
+import io.realm.Realm;
 
 public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ChildViewHolder> {
 
@@ -66,8 +67,51 @@ public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ChildViewH
 
         void bind(ObjectModel objectModel) {
             mBinding.setObject(objectModel);
+            setImagen(String.valueOf(objectModel.getCategoria()));
+            Realm realm = Realm.getDefaultInstance();
+            try{
+                Category category = realm.where(Category.class).
+                        equalTo("id",objectModel.getCategoria()).findFirst();
+                mBinding.category.setText(category.getNombre());
+                if (objectModel.isAcerto()){
+                    mBinding.state.setText("Acertó");
+                    mBinding.state.setTextColor(Color.GREEN);
+                } else {
+                    mBinding.state.setText("Falló");
+                    mBinding.state.setTextColor(Color.RED);
+                }
+
+            } catch (Exception e){
+                e.getMessage();
+            }
 
 
         }
+        public void setImagen(String idCategoria){
+
+            final ImageView image = mBinding.image;
+
+            if(idCategoria.equals("2")) {
+                image.setImageResource(R.drawable.celular);
+            }
+            else if(idCategoria.equals("3")){
+                image.setImageResource(R.drawable.lapiz);
+            }
+            else if(idCategoria.equals("4")){
+                image.setImageResource(R.drawable.moneda);
+            }
+            else if(idCategoria.equals("5")){
+                image.setImageResource(R.drawable.cuaderno);
+            }
+            else if(idCategoria.equals("6")){
+                image.setImageResource(R.drawable.esmalte);
+            }
+
+        }
+
     }
+
+
+
+
 }

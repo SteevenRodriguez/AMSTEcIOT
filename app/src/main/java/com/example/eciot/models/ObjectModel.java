@@ -9,7 +9,7 @@ import io.realm.annotations.PrimaryKey;
 public class ObjectModel extends RealmObject {
     @PrimaryKey
     @SerializedName("id")
-    @Expose
+    @Expose(serialize = false)
     private int id;
     @SerializedName("clasificador")
     @Expose

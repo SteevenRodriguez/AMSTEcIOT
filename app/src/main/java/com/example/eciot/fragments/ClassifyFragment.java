@@ -64,8 +64,6 @@ public class ClassifyFragment extends Fragment {
             public void onClick(View v) {
                 identificarObjeto();
 
-
-
             }
         });
 

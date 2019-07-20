@@ -33,8 +33,7 @@ public interface ApiService {
     @GET("registroDePeso/{pk}")
     Call<ObjectModel> getObject(@Path("pk") int pk, @Header("Authorization") String authorization );
 
-    @POST
-    @FormUrlEncoded
+    @POST("registroDePeso")
     Call<ObjectModel> createObjectModel(@Header("Authorization") String token,
                                         @Body ObjectModel objectModel);
 
@@ -43,7 +42,6 @@ public interface ApiService {
     Call<List<Device>> getDevices(@Header("Authorization") String token);
 
     @POST("clasificador_objetos/ultimoRegistro")
-    @FormUrlEncoded
     Call<ObjectModel> getLastObject(@Header("Authorization") String token);
 
 

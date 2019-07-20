@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,19 +22,28 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.eciot.R;
 import com.example.eciot.databinding.FragmentTrainingBinding;
+import com.example.eciot.models.Category;
+import com.example.eciot.models.ObjectModel;
+import com.example.eciot.models.Token;
+import com.example.eciot.services.ApiService;
+import com.example.eciot.services.RetrofitClient;
 
 import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
 
 
 public class TrainingFragment extends Fragment {
     private RequestQueue mQueue;
     private FragmentTrainingBinding mBinding;
     private Button btnAcerto, btnFallo;
-    String token;
+    public ObjectModel object;
+    private Token token;
     private String pesoObtenido, idCategoriaObtenida;
     private String nombreCategoria;
 
@@ -42,8 +52,6 @@ public class TrainingFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_training,container,
                 false);
-        mQueue = Volley.newRequestQueue(getContext());
-        this.token ="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNCwidXNlcm5hbWUiOiJzb2RlZ29tZSIsImV4cCI6MTU2MzM3NzYyNywiZW1haWwiOiIifQ.clGa4CQDLvjwWRSyrcJiaQT-8ebQHg5Q0cVzl9mbFoQ";
 
         identificarObjeto();
 
@@ -103,46 +111,37 @@ public class TrainingFragment extends Fragment {
     y muestra una imagen de la clasificación
      */
     public void identificarObjeto(){
-        final TextView peso = mBinding.txtPesoValor;
+        final Realm realm = Realm.getDefaultInstance();
+        try {
+             Token token = realm.where(Token.class).findFirst();
+            ApiService apiService = RetrofitClient.createApiService();
+            apiService.getObject(2,"JWT "+token.getToken()).enqueue(new Callback<ObjectModel>() {
+                @Override
+                public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
+                    if (response.isSuccessful()){
+                         object = response.body();
+                        mBinding.txtPesoValor.setText(object.getPeso() + " gramos");
+                        Category category = realm.where(Category.class).
+                                equalTo("id",object.getCategoria()).findFirst();
+                        mBinding.txtClasificador.
+                                setText(category.getNombre());
+                        setImagen(String.valueOf(category.getId()));
 
-        String url_temp = "https://amstdb.herokuapp.com/db/registroDePeso/3";
+                        realm.close();
 
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.GET, url_temp, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                        try {
-                            pesoObtenido=response.getString("peso");
-                            System.out.println(pesoObtenido);
-                            peso.setText(pesoObtenido + " gramos");
 
-                            idCategoriaObtenida=response.getString("categoria");
-                            System.out.println(idCategoriaObtenida);
-
-                            obtenerCategoria(idCategoriaObtenida);
-                            setImagen(idCategoriaObtenida);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
                     }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        }){
-            @Override
-            public Map<String,
-                    String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String,
-                        String>();
-                params.put("Authorization", "JWT " + token);
-                System.out.println(token);
-                return params;
-            }
-        };;
-        mQueue.add(request);
+                }
+
+                @Override
+                public void onFailure(Call<ObjectModel> call, Throwable t) {
+
+                }
+            });
+
+        } catch (Exception e){
+            e.getMessage();
+        }
 
     }
 
@@ -191,38 +190,29 @@ public class TrainingFragment extends Fragment {
 
 
     public void postPeso(boolean acierto){
-        Map<String, Object> params = new HashMap();
+        object.setAcerto(acierto);
+        final Realm realm = Realm.getDefaultInstance();
+        try {
+            Token token = realm.where(Token.class).findFirst();
+            ApiService apiService = RetrofitClient.createApiService();
+            apiService.createObjectModel("JWT "+token.getToken(),object).enqueue(new Callback<ObjectModel>() {
+                @Override
+                public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
+                    if (response.isSuccessful()){
 
-        params.put("clasificador", 1);
-        params.put("categoria", Integer.valueOf(idCategoriaObtenida));
-        params.put("peso", Float.valueOf(pesoObtenido));
-        params.put("acerto", acierto);
-        JSONObject parametros = new JSONObject(params);
-
-        String login_url = "http://amstdb.herokuapp.com/db/registroDePeso";
-        JsonObjectRequest request = new JsonObjectRequest(
-                Request.Method.POST, login_url, parametros,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
+                        Log.d("Acierto","Correcto");
                     }
-                }, new Response.ErrorListener() {
+                }
 
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                System.out.println("Error: "+error);
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "JWT " + token);
-                System.out.println(token);
-                return params;
-            }
-        };
-        mQueue.add(request);
+                @Override
+                public void onFailure(Call<ObjectModel> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception e){
+            e.getMessage();
+        }
+
 
     }
 }
