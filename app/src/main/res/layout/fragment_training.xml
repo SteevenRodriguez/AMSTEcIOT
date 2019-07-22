@@ -10,6 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/bgPantallas"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -87,9 +88,10 @@
 
                 <Button
                     android:id="@+id/btnAcerto"
-                    android:layout_width="115dp"
+                    android:layout_width="75dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:background="@drawable/btn_fondo_color"
                     android:paddingLeft="5px"
                     android:paddingRight="5px"
                     android:text="Acertó" />
@@ -101,6 +103,7 @@
                     android:layout_weight="1"
                     android:paddingLeft="5px"
                     android:paddingRight="5px"
+                    android:background="@drawable/btn_fondo_color"
                     android:text="Falló" />
             </LinearLayout>
 
@@ -125,7 +128,7 @@
                     android:padding="3px">
 
                     <ImageView
-                        android:id="@+id/imgCelulat"
+                        android:id="@+id/imgCelular"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         app:srcCompat="@drawable/celular" />
@@ -146,18 +149,18 @@
                     android:padding="3px">
 
                     <ImageView
-                        android:id="@+id/imgLapiz"
+                        android:id="@+id/imgVaso"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/lapiz" />
+                        app:srcCompat="@drawable/vaso" />
 
                     <TextView
-                        android:id="@+id/txtLapiz"
+                        android:id="@+id/txtVaso"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:textAlignment="center"
-                        android:text="Lapices" />
+                        android:text="Vaso" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -167,18 +170,18 @@
                     android:padding="3px">
 
                     <ImageView
-                        android:id="@+id/imgMoneda"
+                        android:id="@+id/imgLaptop"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/moneda" />
+                        app:srcCompat="@drawable/laptop" />
 
                     <TextView
-                        android:id="@+id/txtMoneda"
+                        android:id="@+id/txtLaptop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:textAlignment="center"
-                        android:text="Moneda" />
+                        android:text="Laptop" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -209,18 +212,18 @@
                     android:padding="3px">
 
                     <ImageView
-                        android:id="@+id/imgEsmalte"
+                        android:id="@+id/imgPlato"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/esmalte" />
+                        app:srcCompat="@drawable/plato" />
 
                     <TextView
-                        android:id="@+id/txtEsmalte"
+                        android:id="@+id/txtPlato"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:textAlignment="center"
-                        android:text="Esmalte" />
+                        android:text="Plato" />
                 </LinearLayout>
             </LinearLayout>
 

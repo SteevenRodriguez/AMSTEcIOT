@@ -86,17 +86,20 @@ public class ClassifyFragment extends Fragment {
         if(idCategoria.equals("2")) {
             image.setImageResource(R.drawable.celular);
         }
-        else if(idCategoria.equals("3")){
-            image.setImageResource(R.drawable.lapiz);
-        }
-        else if(idCategoria.equals("4")){
-            image.setImageResource(R.drawable.moneda);
-        }
         else if(idCategoria.equals("5")){
             image.setImageResource(R.drawable.cuaderno);
         }
-        else if(idCategoria.equals("6")){
-            image.setImageResource(R.drawable.esmalte);
+        else if(idCategoria.equals("7")){
+            image.setImageResource(R.drawable.vaso);
+        }
+        else if(idCategoria.equals("8")){
+            image.setImageResource(R.drawable.laptop);
+        }
+        else if(idCategoria.equals("9")){
+            image.setImageResource(R.drawable.plato);
+        }
+        else if(idCategoria.equals("10")){
+            image.setImageResource(R.drawable.desconocido);
         }
 
     }
