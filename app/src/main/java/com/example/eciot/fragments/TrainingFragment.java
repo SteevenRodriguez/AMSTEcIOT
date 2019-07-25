@@ -25,6 +25,7 @@ import com.example.eciot.databinding.FragmentTrainingBinding;
 import com.example.eciot.models.Category;
 import com.example.eciot.models.ObjectModel;
 import com.example.eciot.models.Token;
+import com.example.eciot.models.UltimoRegistro;
 import com.example.eciot.services.ApiService;
 import com.example.eciot.services.RetrofitClient;
 
@@ -77,8 +78,6 @@ public class TrainingFragment extends Fragment {
     }
 
 
-
-
     /*
     Autor: Sophia Gómez
     Función que recibe el id de la categoria y setea la imagen de la categoria a la que pertenece
@@ -89,19 +88,22 @@ public class TrainingFragment extends Fragment {
         final ImageView image = mBinding.imgObjeto;
 
         if(idCategoria.equals("2")) {
-            image.setImageResource(R.drawable.celular);
-        }
-        else if(idCategoria.equals("3")){
-            image.setImageResource(R.drawable.lapiz);
-        }
-        else if(idCategoria.equals("4")){
-            image.setImageResource(R.drawable.moneda);
+            image.setImageResource(R.drawable.ic_phone);
         }
         else if(idCategoria.equals("5")){
             image.setImageResource(R.drawable.cuaderno);
         }
-        else if(idCategoria.equals("6")){
-            image.setImageResource(R.drawable.esmalte);
+        else if(idCategoria.equals("7")){
+            image.setImageResource(R.drawable.ic_glass);
+        }
+        else if(idCategoria.equals("8")){
+            image.setImageResource(R.drawable.ic_laptop);
+        }
+        else if(idCategoria.equals("9")){
+            image.setImageResource(R.drawable.ic_plate);
+        }
+        else if(idCategoria.equals("10")){
+            image.setImageResource(R.drawable.ic_unknown);
         }
 
     }
@@ -113,13 +115,13 @@ public class TrainingFragment extends Fragment {
     public void identificarObjeto(){
         final Realm realm = Realm.getDefaultInstance();
         try {
-             Token token = realm.where(Token.class).findFirst();
+            Token token = realm.where(Token.class).findFirst();
             ApiService apiService = RetrofitClient.createApiService();
-            apiService.getObject(2,"JWT "+token.getToken()).enqueue(new Callback<ObjectModel>() {
+            apiService.getLastObject("JWT "+token.getToken()).enqueue(new Callback<UltimoRegistro>() {
                 @Override
-                public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
+                public void onResponse(Call<UltimoRegistro> call, retrofit2.Response<UltimoRegistro> response) {
                     if (response.isSuccessful()){
-                         object = response.body();
+                         object = response.body().getUltimoRegistro();
                         mBinding.txtPesoValor.setText(object.getPeso() + " gramos");
                         Category category = realm.where(Category.class).
                                 equalTo("id",object.getCategoria()).findFirst();
@@ -134,7 +136,7 @@ public class TrainingFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<ObjectModel> call, Throwable t) {
+                public void onFailure(Call<UltimoRegistro> call, Throwable t) {
 
                 }
             });
@@ -182,7 +184,7 @@ public class TrainingFragment extends Fragment {
                 System.out.println(token);
                 return params;
             }
-        };;
+        };
         mQueue.add(request);
         //return nombreCategoria;
     }

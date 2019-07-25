@@ -4,6 +4,7 @@ import com.example.eciot.models.Category;
 import com.example.eciot.models.Device;
 import com.example.eciot.models.ObjectModel;
 import com.example.eciot.models.Token;
+import com.example.eciot.models.UltimoRegistro;
 
 import java.util.List;
 
@@ -42,7 +43,7 @@ public interface ApiService {
     Call<List<Device>> getDevices(@Header("Authorization") String token);
 
     @POST("clasificador_objetos/ultimoRegistro")
-    Call<ObjectModel> getLastObject(@Header("Authorization") String token);
+    Call<UltimoRegistro> getLastObject(@Header("Authorization") String token);
 
 
 

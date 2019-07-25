@@ -92,19 +92,22 @@ public class ObjectAdapter extends RecyclerView.Adapter<ObjectAdapter.ChildViewH
             final ImageView image = mBinding.image;
 
             if(idCategoria.equals("2")) {
-                image.setImageResource(R.drawable.celular);
-            }
-            else if(idCategoria.equals("3")){
-                image.setImageResource(R.drawable.lapiz);
-            }
-            else if(idCategoria.equals("4")){
-                image.setImageResource(R.drawable.moneda);
+                image.setImageResource(R.drawable.ic_phone);
             }
             else if(idCategoria.equals("5")){
                 image.setImageResource(R.drawable.cuaderno);
             }
-            else if(idCategoria.equals("6")){
-                image.setImageResource(R.drawable.esmalte);
+            else if(idCategoria.equals("7")){
+                image.setImageResource(R.drawable.ic_glass);
+            }
+            else if(idCategoria.equals("8")){
+                image.setImageResource(R.drawable.ic_laptop);
+            }
+            else if(idCategoria.equals("9")){
+                image.setImageResource(R.drawable.ic_plate);
+            }
+            else if(idCategoria.equals("10")){
+                image.setImageResource(R.drawable.ic_unknown);
             }
 
         }

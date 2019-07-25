@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bgPantallas"
+        android:background="@drawable/bg_pantallas"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -22,8 +22,7 @@
             android:theme="?attr/actionBarTheme" />
 
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -117,7 +116,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal">
 
@@ -131,7 +130,7 @@
                         android:id="@+id/imgCelular"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/celular" />
+                        app:srcCompat="@drawable/ic_phone" />
 
                     <TextView
                         android:id="@+id/txtCelular"
@@ -152,7 +151,7 @@
                         android:id="@+id/imgVaso"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/vaso" />
+                        app:srcCompat="@drawable/ic_glass" />
 
                     <TextView
                         android:id="@+id/txtVaso"
@@ -173,7 +172,7 @@
                         android:id="@+id/imgLaptop"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/laptop" />
+                        app:srcCompat="@drawable/ic_laptop" />
 
                     <TextView
                         android:id="@+id/txtLaptop"
@@ -215,7 +214,7 @@
                         android:id="@+id/imgPlato"
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
-                        app:srcCompat="@drawable/plato" />
+                        app:srcCompat="@drawable/ic_plate" />
 
                     <TextView
                         android:id="@+id/txtPlato"

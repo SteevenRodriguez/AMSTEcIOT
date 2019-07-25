@@ -26,6 +26,7 @@ import com.example.eciot.databinding.FragmentClassifyBinding;
 import com.example.eciot.models.Category;
 import com.example.eciot.models.ObjectModel;
 import com.example.eciot.models.Token;
+import com.example.eciot.models.UltimoRegistro;
 import com.example.eciot.services.ApiService;
 import com.example.eciot.services.RetrofitClient;
 
@@ -84,22 +85,22 @@ public class ClassifyFragment extends Fragment {
         final ImageView image = mFragmentClassifyBinding.imgObjeto;
 
         if(idCategoria.equals("2")) {
-            image.setImageResource(R.drawable.celular);
+            image.setImageResource(R.drawable.ic_phone);
         }
         else if(idCategoria.equals("5")){
             image.setImageResource(R.drawable.cuaderno);
         }
         else if(idCategoria.equals("7")){
-            image.setImageResource(R.drawable.vaso);
+            image.setImageResource(R.drawable.ic_glass);
         }
         else if(idCategoria.equals("8")){
-            image.setImageResource(R.drawable.laptop);
+            image.setImageResource(R.drawable.ic_laptop);
         }
         else if(idCategoria.equals("9")){
-            image.setImageResource(R.drawable.plato);
+            image.setImageResource(R.drawable.ic_plate);
         }
         else if(idCategoria.equals("10")){
-            image.setImageResource(R.drawable.desconocido);
+            image.setImageResource(R.drawable.ic_unknown);
         }
 
     }
@@ -108,22 +109,22 @@ public class ClassifyFragment extends Fragment {
     Función que al clickear en el botón, sensa el peso del objeto en la balanza
     y muestra una imagen de la clasificación
      */
+
     public void identificarObjeto(){
         final Realm realm = Realm.getDefaultInstance();
         try {
             Token token = realm.where(Token.class).findFirst();
             ApiService apiService = RetrofitClient.createApiService();
-            apiService.getObject(2,"JWT "+token.getToken()).enqueue(new Callback<ObjectModel>() {
+            apiService.getLastObject("JWT "+token.getToken()).enqueue(new Callback<UltimoRegistro>() {
                 @Override
-                public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
+                public void onResponse(Call<UltimoRegistro> call, retrofit2.Response<UltimoRegistro> response) {
                     if (response.isSuccessful()){
-                        ObjectModel obj = response.body();
-                        mFragmentClassifyBinding.txtPeso.setText("El peso del objeto es "
-                                + obj.getPeso() + " gramos");
+                        ObjectModel object = response.body().getUltimoRegistro();
+                        mFragmentClassifyBinding.txtPeso.setText(object.getPeso() + " gramos");
                         Category category = realm.where(Category.class).
-                                equalTo("id",obj.getCategoria()).findFirst();
+                                equalTo("id",object.getCategoria()).findFirst();
                         mFragmentClassifyBinding.txtClasificador.
-                                setText("Categoría: "+category.getNombre());
+                                setText(category.getNombre());
                         setImagen(String.valueOf(category.getId()));
 
                         realm.close();
@@ -133,7 +134,7 @@ public class ClassifyFragment extends Fragment {
                 }
 
                 @Override
-                public void onFailure(Call<ObjectModel> call, Throwable t) {
+                public void onFailure(Call<UltimoRegistro> call, Throwable t) {
 
                 }
             });
@@ -180,7 +181,7 @@ public class ClassifyFragment extends Fragment {
                 System.out.println(token);
                 return params;
             }
-        };;
+        };
         mQueue.add(request);
         //return nombreCategoria;
     }
