@@ -1,5 +1,7 @@
 package com.example.eciot.activities;
 
+import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +16,7 @@ import com.example.eciot.fragments.HistoryFragment;
 import com.example.eciot.R;
 import com.example.eciot.models.Category;
 import com.example.eciot.models.Token;
+import com.example.eciot.models.User;
 import com.example.eciot.services.ApiService;
 import com.example.eciot.services.RetrofitClient;
 
@@ -23,6 +26,7 @@ import android.view.Menu;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,6 +115,7 @@ public class DrawerMenuActivity extends AppCompatActivity
 
         }
         else if (item == R.id.nav_share) {
+            logOut();
 
         }
 
@@ -153,6 +158,37 @@ public class DrawerMenuActivity extends AppCompatActivity
                 e.getMessage();
         }
 
+
+
+    }
+
+
+    public void logOut(){
+        SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(DrawerMenuActivity.this, SweetAlertDialog.NORMAL_TYPE)
+                .setContentText(("Desea cerrar sesión?"))
+                .setConfirmText("Sí")
+                .setCancelText("No")
+                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismiss();
+                        Realm realm = Realm.getDefaultInstance();
+                        try{
+                            realm.beginTransaction();
+                            realm.where(Token.class).findAll().deleteAllFromRealm();
+                            realm.commitTransaction();
+                            startActivity(new Intent(DrawerMenuActivity.this, MainActivity.class));
+                            finish();
+
+                        } catch (Exception e) {
+
+                        } finally {
+                            realm.close();
+                        }
+                    }
+                });
+        sweetAlertDialog.setCancelable(false);
+        sweetAlertDialog.show();
 
 
     }

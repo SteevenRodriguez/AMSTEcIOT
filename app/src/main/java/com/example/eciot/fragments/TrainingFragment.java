@@ -32,6 +32,7 @@ import com.example.eciot.services.RetrofitClient;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import io.realm.Realm;
@@ -121,13 +122,19 @@ public class TrainingFragment extends Fragment {
                 @Override
                 public void onResponse(Call<UltimoRegistro> call, retrofit2.Response<UltimoRegistro> response) {
                     if (response.isSuccessful()){
-                         object = response.body().getUltimoRegistro();
-                        mBinding.txtPesoValor.setText(object.getPeso() + " gramos");
+                        if (response.body() != null) {
+                            object = response.body().getUltimoRegistro();
+                        }
+                        mBinding.txtPesoValor.setText(String.format(Locale.US, "%.4f", object.getPeso()) + " gramos");
                         Category category = realm.where(Category.class).
                                 equalTo("id",object.getCategoria()).findFirst();
-                        mBinding.txtClasificador.
-                                setText(category.getNombre());
-                        setImagen(String.valueOf(category.getId()));
+                        if (category != null) {
+                            mBinding.txtClasificador.
+                                    setText(category.getNombre());
+                        }
+                        if (category != null) {
+                            setImagen(String.valueOf(category.getId()));
+                        }
 
                         realm.close();
 

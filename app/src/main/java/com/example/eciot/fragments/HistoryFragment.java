@@ -9,8 +9,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.eciot.R;
+import com.example.eciot.activities.MainActivity;
 import com.example.eciot.adapters.ObjectAdapter;
 import com.example.eciot.databinding.FragmentHistoryBinding;
 import com.example.eciot.models.ObjectModel;
@@ -20,6 +22,7 @@ import com.example.eciot.services.RetrofitClient;
 
 import java.util.List;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,6 +47,13 @@ public class HistoryFragment extends Fragment {
 
 
     public void getData(){
+        final SweetAlertDialog progressDialog = new SweetAlertDialog(getContext());
+        progressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Descargando Datos");
+        progressDialog.show();
+
+
         final Realm realm = Realm.getDefaultInstance();
         try {
             Token token = realm.where(Token.class).findFirst();
@@ -65,13 +75,19 @@ public class HistoryFragment extends Fragment {
 
                         mFragmentBinding.percent.setText(String.format("%.2f", progress)+"%");
                         mFragmentBinding.progressBar.setProgress(progress);
-
+                        progressDialog.dismissWithAnimation();
+                    } else {
+                        progressDialog.dismissWithAnimation();
+                        Toast toast = Toast.makeText(getContext(), "Error de descarga", Toast.LENGTH_LONG);
+                        toast.show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<ObjectModel>> call, Throwable t) {
-
+                    progressDialog.dismissWithAnimation();
+                    Toast toast = Toast.makeText(getContext(), "Error de descarga", Toast.LENGTH_LONG);
+                    toast.show();
                 }
             });
         } catch (Exception e){

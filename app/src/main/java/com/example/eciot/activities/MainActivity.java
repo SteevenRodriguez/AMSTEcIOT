@@ -18,6 +18,9 @@ import com.example.eciot.models.User;
 import com.example.eciot.services.ApiService;
 import com.example.eciot.services.RetrofitClient;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.realm.Realm;
+import io.realm.RealmObject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -34,40 +37,63 @@ public class MainActivity extends AppCompatActivity {
 
         usernameEdit = mMainBinding.txtUsuario;
         passwordEdit = mMainBinding.txtPassword;
+        if (verifyToken()){
+            Intent ingreso= new Intent(getApplicationContext(), DrawerMenuActivity.class);
+            startActivity(ingreso);
+        }
 
     }
     public void iniciarSesion(View v){
-
-        ApiService api = RetrofitClient.createApiService();
-        api.getToken(usernameEdit.getText().toString(),passwordEdit.getText().toString()).enqueue(new Callback<Token>() {
-            @Override
-            public void onResponse(Call<Token> call, Response<Token> response) {
-                if (response.isSuccessful()){
-                    User user = new User(usernameEdit.getText().toString(),passwordEdit.getText().
-                            toString());
+        final SweetAlertDialog progress = new SweetAlertDialog(MainActivity.this);
+        progress.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+        progress.setCancelable(false);
+        progress.setTitle("Iniciando Sesión");
+        progress.show();
+            ApiService api = RetrofitClient.createApiService();
+            api.getToken(usernameEdit.getText().toString(),passwordEdit.getText().toString()).enqueue(new Callback<Token>() {
+                @Override
+                public void onResponse(Call<Token> call, Response<Token> response) {
+                    if (response.isSuccessful()){
+                        User user = new User(usernameEdit.getText().toString(),passwordEdit.getText().
+                                toString());
                     /*
                      Si es necesario guardar usuarios
                      user.save();
                      */
 
-                    Token token = response.body();
-                    token.save();
+                        Token token = response.body();
+                        token.save();
+                        progress.dismissWithAnimation();
+                        Intent ingreso= new Intent(getApplicationContext(), DrawerMenuActivity.class);
+                        startActivity(ingreso);
 
-                    Intent ingreso= new Intent(getApplicationContext(), DrawerMenuActivity.class);
-                    startActivity(ingreso);
+                    } else {
+                        progress.dismissWithAnimation();
+                        Toast toast = Toast.makeText(getApplicationContext(), "Usuario no registrado", Toast.LENGTH_LONG);
+                        toast.show();
+                    }
+                }
 
-                } else {
+                @Override
+                public void onFailure(Call<Token> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Usuario no registrado", Toast.LENGTH_LONG);
                     toast.show();
                 }
-            }
+            });
 
-            @Override
-            public void onFailure(Call<Token> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Usuario no registrado", Toast.LENGTH_LONG);
-                toast.show();
-            }
-        });
+
+    }
+
+
+
+    private boolean verifyToken(){
+        Realm realm = Realm.getDefaultInstance();
+        Token token = realm.where(Token.class).findFirst();
+        if (token != null){
+            return true;
+        }
+        return false;
+
     }
 
 

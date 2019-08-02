@@ -1,5 +1,6 @@
 package com.example.eciot.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -33,8 +34,10 @@ import com.example.eciot.services.RetrofitClient;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,16 +114,25 @@ public class ClassifyFragment extends Fragment {
      */
 
     public void identificarObjeto(){
+        final SweetAlertDialog progressDialog = new SweetAlertDialog(getContext());
+        progressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+        progressDialog.setCancelable(false);
+        progressDialog.setTitle("Descargando Datos");
+        progressDialog.show();
+
         final Realm realm = Realm.getDefaultInstance();
         try {
             Token token = realm.where(Token.class).findFirst();
             ApiService apiService = RetrofitClient.createApiService();
             apiService.getLastObject("JWT "+token.getToken()).enqueue(new Callback<UltimoRegistro>() {
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onResponse(Call<UltimoRegistro> call, retrofit2.Response<UltimoRegistro> response) {
                     if (response.isSuccessful()){
                         ObjectModel object = response.body().getUltimoRegistro();
-                        mFragmentClassifyBinding.txtPeso.setText(object.getPeso() + " gramos");
+
+                        mFragmentClassifyBinding.txtPeso.setText(String.format(Locale.US,"%.4f", object.getPeso())
+                                + " gramos");
                         Category category = realm.where(Category.class).
                                 equalTo("id",object.getCategoria()).findFirst();
                         mFragmentClassifyBinding.txtClasificador.
@@ -128,6 +140,7 @@ public class ClassifyFragment extends Fragment {
                         setImagen(String.valueOf(category.getId()));
 
                         realm.close();
+                        progressDialog.dismissWithAnimation();
 
 
                     }
@@ -135,7 +148,7 @@ public class ClassifyFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<UltimoRegistro> call, Throwable t) {
-
+                    progressDialog.dismissWithAnimation();
                 }
             });
 
