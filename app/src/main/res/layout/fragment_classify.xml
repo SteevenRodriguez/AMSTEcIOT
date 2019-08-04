@@ -27,7 +27,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/bg_pantallas"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="-374dp">
 
@@ -41,7 +40,6 @@
                     android:ems="10"
                     android:gravity="center"
                     android:text="Clasificador de objetos"
-                    android:textColor="#F44336"
                     android:textSize="30sp" />
 
                 <TextView

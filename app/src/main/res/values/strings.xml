@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">EcIOT</string>
+    <string name="app_name">SCALA</string>
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="login">Iniciar Sesión</string>
@@ -7,8 +7,8 @@
     <string name="title_activity_drawer_menu">DrawerMenuActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">SCALA</string>
+    <string name="nav_header_subtitle">Clasificador de Objetos</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
