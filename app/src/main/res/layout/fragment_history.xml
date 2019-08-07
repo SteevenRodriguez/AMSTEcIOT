@@ -26,7 +26,7 @@
                 app:backgroundStrokeWidth="2dp"
                 app:drawBackgroundStroke="false"
                 app:foregroundStrokeCap="butt"
-                app:foregroundStrokeColor="#9c27b0"
+                app:foregroundStrokeColor="#536DFE"
                 app:foregroundStrokeWidth="5dp"
                 app:indeterminate="false"
                 app:indeterminateMinimumAngle="45"
