@@ -5,6 +5,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -46,7 +47,6 @@ public class ClassifyFragment extends Fragment {
     private FragmentClassifyBinding mFragmentClassifyBinding;
     private RequestQueue mQueue;
     private TextView txtPeso;
-    private Button btnIdentificar;
     String token;
     private String pesoObtenido, idCategoriaObtenida;
     private String nombreCategoria;
@@ -61,18 +61,8 @@ public class ClassifyFragment extends Fragment {
         mFragmentClassifyBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_classify,
                 container,false);
         txtPeso =  mFragmentClassifyBinding.txtPeso;
-        btnIdentificar = mFragmentClassifyBinding.btnObjeto;
 
-        btnIdentificar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                identificarObjeto();
-
-            }
-        });
-
-
-
+        identificarObjeto();
 
         return mFragmentClassifyBinding.getRoot();
 
@@ -129,6 +119,7 @@ public class ClassifyFragment extends Fragment {
                 @Override
                 public void onResponse(Call<UltimoRegistro> call, retrofit2.Response<UltimoRegistro> response) {
                     if (response.isSuccessful()){
+
                         ObjectModel object = response.body().getUltimoRegistro();
 
                         mFragmentClassifyBinding.txtPeso.setText(String.format(Locale.US,"%.4f", object.getPeso())
@@ -142,6 +133,7 @@ public class ClassifyFragment extends Fragment {
                         realm.close();
                         progressDialog.dismissWithAnimation();
 
+                        actualizarAutomaticamente();
 
                     }
                 }
@@ -197,5 +189,21 @@ public class ClassifyFragment extends Fragment {
         };
         mQueue.add(request);
         //return nombreCategoria;
+    }
+
+    public void actualizarAutomaticamente(){
+        try{
+            final Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    identificarObjeto();
+                }
+            };
+            handler.postDelayed(runnable, 3000);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

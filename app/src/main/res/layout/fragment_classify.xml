@@ -52,15 +52,6 @@
                     android:ems="10"
                     android:gravity="center" />
 
-                <Button
-                    android:id="@+id/btnObjeto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="20dp"
-                    android:textColor="#FFFFFF"
-                    android:background="@drawable/btn_fondo_color"
-                    android:text="IDENTIFICAR OBJETO" />
 
                 <ImageView
                     android:id="@+id/imgObjeto"
