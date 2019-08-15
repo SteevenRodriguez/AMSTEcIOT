@@ -104,11 +104,11 @@ public class ClassifyFragment extends Fragment {
      */
 
     public void identificarObjeto(){
-        final SweetAlertDialog progressDialog = new SweetAlertDialog(getContext());
-        progressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
-        progressDialog.setCancelable(false);
-        progressDialog.setTitle("Descargando Datos");
-        progressDialog.show();
+//        final SweetAlertDialog progressDialog = new SweetAlertDialog(getContext());
+//        progressDialog.changeAlertType(SweetAlertDialog.PROGRESS_TYPE);
+//        progressDialog.setCancelable(false);
+//        progressDialog.setTitle("Descargando Datos");
+//        progressDialog.show();
 
         final Realm realm = Realm.getDefaultInstance();
         try {
@@ -123,7 +123,7 @@ public class ClassifyFragment extends Fragment {
                         ObjectModel object = response.body().getUltimoRegistro();
 
                         mFragmentClassifyBinding.txtPeso.setText(String.format(Locale.US,"%.4f", object.getPeso())
-                                + " gramos");
+                                + " kilogramos");
                         Category category = realm.where(Category.class).
                                 equalTo("id",object.getCategoria()).findFirst();
                         mFragmentClassifyBinding.txtClasificador.
@@ -131,7 +131,7 @@ public class ClassifyFragment extends Fragment {
                         setImagen(String.valueOf(category.getId()));
 
                         realm.close();
-                        progressDialog.dismissWithAnimation();
+                        //progressDialog.dismissWithAnimation();
 
                         actualizarAutomaticamente();
 
@@ -140,7 +140,7 @@ public class ClassifyFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<UltimoRegistro> call, Throwable t) {
-                    progressDialog.dismissWithAnimation();
+                    //progressDialog.dismissWithAnimation();
                 }
             });
 

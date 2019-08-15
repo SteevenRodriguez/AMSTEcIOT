@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFailure(Call<Token> call, Throwable t) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Usuario no registrado", Toast.LENGTH_LONG);
                     toast.show();
+                    progress.cancel();
                 }
             });
 
