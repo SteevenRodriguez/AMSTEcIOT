@@ -76,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Usuario no registrado", Toast.LENGTH_LONG);
+                    t.getCause();
+                    Toast toast = Toast.makeText(getApplicationContext(), "Error de Conexión", Toast.LENGTH_LONG);
                     toast.show();
                     progress.cancel();
                 }

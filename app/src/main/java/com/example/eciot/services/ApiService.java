@@ -1,5 +1,6 @@
 package com.example.eciot.services;
 
+import com.example.eciot.models.Batery;
 import com.example.eciot.models.Category;
 import com.example.eciot.models.Device;
 import com.example.eciot.models.ObjectModel;
@@ -31,12 +32,20 @@ public interface ApiService {
 
     @GET("registroDePeso")
     Call<List<ObjectModel>> getObjects(@Header("Authorization") String token);
+
     @GET("registroDePeso/{pk}")
     Call<ObjectModel> getObject(@Path("pk") int pk, @Header("Authorization") String authorization );
+
+    @PATCH("registroDePeso/{pk}")
+    Call<ObjectModel> updateObject(@Path("pk") int pk, @Header("Authorization") String authorization,
+                                   @Body ObjectModel objectModel);
 
     @POST("registroDePeso")
     Call<ObjectModel> createObjectModel(@Header("Authorization") String token,
                                         @Body ObjectModel objectModel);
+
+    @GET("dispositivo/{pk}")
+    Call<Batery> getBatery(@Path("pk") int pk, @Header("Authorization") String authorization );
 
 
     @GET("dispositivo")

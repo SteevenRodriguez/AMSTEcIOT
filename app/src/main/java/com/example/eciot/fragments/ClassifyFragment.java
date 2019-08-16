@@ -9,12 +9,14 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -24,7 +26,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.eciot.R;
+import com.example.eciot.adapters.ObjectAdapter;
 import com.example.eciot.databinding.FragmentClassifyBinding;
+import com.example.eciot.models.Batery;
 import com.example.eciot.models.Category;
 import com.example.eciot.models.ObjectModel;
 import com.example.eciot.models.Token;
@@ -35,8 +39,10 @@ import com.example.eciot.services.RetrofitClient;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import io.realm.Realm;
@@ -62,7 +68,10 @@ public class ClassifyFragment extends Fragment {
                 container,false);
         txtPeso =  mFragmentClassifyBinding.txtPeso;
 
+
         identificarObjeto();
+        mFragmentClassifyBinding.imgBattery.setImageDrawable(ContextCompat.getDrawable(
+                Objects.requireNonNull(getActivity()), R.drawable.ic_battery_charging_full));
 
         return mFragmentClassifyBinding.getRoot();
 
@@ -198,6 +207,8 @@ public class ClassifyFragment extends Fragment {
                 @Override
                 public void run() {
                     identificarObjeto();
+                    getBatery();
+
                 }
             };
             handler.postDelayed(runnable, 3000);
@@ -205,5 +216,31 @@ public class ClassifyFragment extends Fragment {
             e.printStackTrace();
         }
 
+    }
+
+
+    private void getBatery() {
+        final Realm realm = Realm.getDefaultInstance();
+        try {
+            Token token = realm.where(Token.class).findFirst();
+            ApiService api = RetrofitClient.createApiService();
+                api.getBatery(10,"JWT "+token.getToken()).enqueue(new Callback<Batery>() {
+                @Override
+                public void onResponse(Call<Batery> call, retrofit2.Response<Batery> response) {
+                    if (response.isSuccessful()){
+                        mFragmentClassifyBinding.battery.setProgress(response.body().getBatery());
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Batery> call, Throwable t) {
+
+                }
+            });
+        } catch (Exception e){
+            e.getMessage();
+        }
     }
 }

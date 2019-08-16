@@ -204,7 +204,8 @@ public class TrainingFragment extends Fragment {
         try {
             Token token = realm.where(Token.class).findFirst();
             ApiService apiService = RetrofitClient.createApiService();
-            apiService.createObjectModel("JWT "+token.getToken(),object).enqueue(new Callback<ObjectModel>() {
+            apiService.updateObject(object.getId(),"JWT "+token.getToken(),object).
+                    enqueue(new Callback<ObjectModel>() {
                 @Override
                 public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
                     if (response.isSuccessful()){
