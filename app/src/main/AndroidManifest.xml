@@ -16,6 +16,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
 
 
@@ -24,15 +25,20 @@
         android:screenOrientation="portrait"
         android:name=".activities.DrawerMenuActivity"
         android:label="@string/title_activity_drawer_menu"
-        android:theme="@style/AppTheme.NoActionBar" />
+        android:theme="@style/AppTheme.NoActionBar"
+        />
+
     <activity android:name=".activities.MainActivity"
         android:configChanges="orientation"
         android:screenOrientation="portrait">
-
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />
-
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
             <category android:name="android.intent.category.LAUNCHER" />
+            <data android:scheme="http"
+                android:host="amstdb.herokuapp.com"
+                android:pathPrefix="/restapi" />
         </intent-filter>
     </activity>
         <service android:name=".services.MyFirebaseInstanceService">

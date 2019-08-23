@@ -1,6 +1,7 @@
 package com.example.eciot.fragments;
 
 import android.databinding.DataBindingUtil;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -138,6 +140,8 @@ public class TrainingFragment extends Fragment {
 
                         realm.close();
 
+                        actualizarAutomaticamente();
+
 
                     }
                 }
@@ -197,6 +201,24 @@ public class TrainingFragment extends Fragment {
     }
 
 
+    public void actualizarAutomaticamente(){
+        try{
+            final Handler handler = new Handler();
+            final Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    identificarObjeto();
+                    //getBatery();
+
+                }
+            };
+            handler.postDelayed(runnable, 3000);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void postPeso(boolean acierto){
         object.setAcerto(acierto);
@@ -210,7 +232,8 @@ public class TrainingFragment extends Fragment {
                 public void onResponse(Call<ObjectModel> call, retrofit2.Response<ObjectModel> response) {
                     if (response.isSuccessful()){
 
-                        Log.d("Acierto","Correcto");
+                        Toast toast=Toast.makeText(getContext(),"Dato Actualizado",Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 }
 
